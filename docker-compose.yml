@@ -6,6 +6,7 @@ services:
       - 80:80
     networks:
       - netw01
+      
   app:
     build:
       context: ./node
@@ -13,6 +14,8 @@ services:
       - ./node:/var/www/app
     networks:
       - netw01
+    env_file:
+      - ./node/.env
     depends_on:
       - db 
     ports:

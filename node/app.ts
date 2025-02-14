@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import express from 'express'
+import path from 'path';
+
 
 class CreateUser {
     private prismaClient: PrismaClient;
@@ -28,13 +30,22 @@ const main = async () => {
 // main();
 
 const app = express();
-
 const route = express.Router()
 
 app.use(express.json())
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
-route.get('/', (req: express.Request, res: express.Response) => {
-  res.json({ message: 'hello world with Typescript' })
+route.get('/', async (req: express.Request, res: express.Response) => {
+    try {
+        const prismaClient = new PrismaClient();
+        const users = await prismaClient.user.findMany();
+        res.render('index', {users});
+      } catch (err) {
+        res.status(500).send('Erro ao buscar dados');
+        console.log(err)
+      }
+//   res.json({ message: 'hello world with Typescript' })
 })
 
 app.use(route)
