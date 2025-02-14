@@ -1,0 +1,37 @@
+services:
+  web:
+    build:
+      context: nginx/
+    ports:
+      - 80:80
+    networks:
+      - netw01
+  app:
+    build:
+      context: ./node
+    volumes:
+      - ./node:/var/www/app
+    networks:
+      - netw01
+    depends_on:
+      - db 
+    ports:
+      - 3000:3000
+    
+  db:
+    image: postgres:alpine
+    volumes:
+      - ./postgres:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=fullcycle
+      - POSTGRES_DB=fullcycle
+      - POSTGRES_PASSWORD=root
+    networks:
+      - netw01
+
+networks:
+  netw01:
+    driver: bridge
+    
+    
+  
