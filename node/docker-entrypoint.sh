@@ -1,6 +1,6 @@
 #!/bin/bash
 
 # yarn prisma migrate dev
-yarn ts-node app.ts
+yarn node app.js
 
 exec "$@"
